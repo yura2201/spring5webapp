@@ -1,8 +1,15 @@
 package guru.springframework.spring5webapp.domain;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by jt on 12/22/19.
@@ -19,8 +26,11 @@ public class Book {
 
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
+        inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
+
+    @ManyToOne
+    private Publisher publisher;
 
     public Book() {
     }
@@ -62,20 +72,32 @@ public class Book {
         this.authors = authors;
     }
 
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", authors=" + authors +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", isbn='" + isbn + '\'' +
+            ", authors=" + authors +
+            '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Book book = (Book) o;
 
